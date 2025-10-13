@@ -1,0 +1,48 @@
+
+CREATE TABLE Genres (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Authors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    birth_year INT,
+    country VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    author_id INT REFERENCES Authors(id) ON DELETE CASCADE,
+    genre_id INT REFERENCES Genres(id) ON DELETE SET NULL,
+    published_year INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Readers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(20),
+    address VARCHAR(200),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Borrowings (
+    id SERIAL PRIMARY KEY,
+    reader_id INT REFERENCES Readers(id) ON DELETE CASCADE,
+    book_id INT REFERENCES Books(id) ON DELETE CASCADE,
+    borrow_date DATE NOT NULL,
+    return_date DATE,
+    status VARCHAR(50) DEFAULT 'borrowed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

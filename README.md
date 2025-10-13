@@ -183,3 +183,47 @@ ed_at         |         updated_at
  The Shining                    | Stephen King    | Horror
 (8 rows)
 ```
+
+# Lab 4
+```bash
+    title    | published_year 
+-------------+----------------
+ It          |           1986
+ The Shining |           1977
+(2 rows)
+
+             title              | published_year 
+--------------------------------+----------------
+ The Hobbit                     |           1937
+ Foundation                     |           1951
+ Murder on the Orient Express   |           1934
+ Pride and Prejudice            |           1813
+ Adventures of Huckleberry Finn |           1884
+ War and Peace                  |           1869
+(6 rows)
+
+      name      
+----------------
+ J.R.R. Tolkien
+(1 row)
+
+            title             
+------------------------------
+ The Hobbit
+ Murder on the Orient Express
+ Pride and Prejudice
+(3 rows)
+
+            title             | published_year 
+------------------------------+----------------
+ The Hobbit                   |           1937
+ Foundation                   |           1951
+ Murder on the Orient Express |           1934
+ It                           |           1986
+ The Shining                  |           1977
+(5 rows)
+
+      name       
+-----------------
+ Bohdan Petrenko
+(1 row)```
