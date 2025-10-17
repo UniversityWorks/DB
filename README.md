@@ -227,3 +227,46 @@ ed_at         |         updated_at
 -----------------
  Bohdan Petrenko
 (1 row)```
+
+# Lab5
+
+```bash
+[root@core postgres]# sudo -i -u postgres psql -d library_db -f triggers.sql
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE FUNCTION
+
+library_db=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner   
+--------+------------+-------+----------
+ public | authors    | table | postgres
+ public | books      | table | postgres
+ public | borrowings | table | postgres
+ public | genres     | table | postgres
+ public | readers    | table | postgres
+(5 rows)
+
+library_db=# INSERT INTO Books (title, author_id, genre_id, published_year)
+VALUES ('Test Trigger Book', 1, 1, 2025);
+NOTICE:  Додано нову книгу: Test Trigger Book
+INSERT 0 1
+library_db=# UPDATE Books SET title = 'Updated Trigger Book' WHERE title = 'Test Trigger Book';                                                                 
+NOTICE:  Оновлено книгу: Updated Trigger Book
+UPDATE 1
+library_db=# DELETE FROM Books WHERE title = 'Updated Trigger Book';
+NOTICE:  Видалено книгу: Updated Trigger Book
+DELETE 1
+library_db=# SELECT count_books_for_reader('Alice Johnson');
+ count_books_for_reader 
+------------------------
+                      1
+(1 row)
+
+library_db=# \q
+[root@core postgres]# 
+```
