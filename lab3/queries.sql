@@ -1,7 +1,7 @@
 -- comparing operators
 SELECT * FROM Books WHERE published_year > 1950;
 
--- agregate
+-- AVG
 SELECT COUNT(*) AS total_books, AVG(published_year) AS avg_year FROM Books;
 
 -- IN
