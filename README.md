@@ -185,6 +185,7 @@ ed_at         |         updated_at
 ```
 
 # Lab 4
+
 ```bash
     title    | published_year 
 -------------+----------------
@@ -226,7 +227,10 @@ ed_at         |         updated_at
       name       
 -----------------
  Bohdan Petrenko
-(1 row)```
+(1 row)
+```
+
+
 
 # Lab5
 
