@@ -274,3 +274,177 @@ library_db=# SELECT count_books_for_reader('Alice Johnson');
 library_db=# \q
 [root@core postgres]# 
 ```
+
+
+
+#Lab 6
+
+```bash
+[root@core postgres]# sudo -i -u postgres psql -d library_db -f create_tables.sql
+sudo -i -u postgres psql -d library_db -f insert_data.sql
+sudo -i -u postgres psql -d library_db -f privileges.sql
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+TRUNCATE TABLE
+psql:insert_data.sql:2: NOTICE:  truncate cascades to table "borrowings"
+TRUNCATE TABLE
+psql:insert_data.sql:3: NOTICE:  truncate cascades to table "borrowings"
+TRUNCATE TABLE
+psql:insert_data.sql:4: NOTICE:  truncate cascades to table "books"
+psql:insert_data.sql:4: NOTICE:  truncate cascades to table "borrowings"
+TRUNCATE TABLE
+psql:insert_data.sql:5: NOTICE:  truncate cascades to table "books"
+psql:insert_data.sql:5: NOTICE:  truncate cascades to table "borrowings"
+TRUNCATE TABLE
+INSERT 0 7
+INSERT 0 7
+INSERT 0 8
+INSERT 0 5
+INSERT 0 5
+psql:privileges.sql:1: ERROR:  role "user1" already exists
+psql:privileges.sql:2: ERROR:  role "user2" already exists
+psql:privileges.sql:3: ERROR:  role "user3" already exists
+GRANT
+GRANT
+GRANT
+GRANT
+REVOKE
+ALTER TABLE
+CREATE POLICY
+GRANT
+GRANT
+psql:privileges.sql:26: ERROR:  syntax error at or near "("
+LINE 1: GRANT CONNECT ON DATABASE current_database() TO user1, user2...
+                                                  ^
+[root@core postgres]# sudo -i -u postgres psql -d library_db
+psql (17.6)
+Type "help" for help.
+
+library_db=# \dt
+           List of relations
+ Schema |    Name    | Type  |  Owner   
+--------+------------+-------+----------
+ public | authors    | table | postgres
+ public | books      | table | postgres
+ public | borrowings | table | postgres
+ public | genres     | table | postgres
+ public | readers    | table | postgres
+(5 rows)
+
+library_db=# SELECT * FROM books;
+ id |             title              | author_id | genre_id | published_year |         cre
+ated_at         |         updated_at         
+----+--------------------------------+-----------+----------+----------------+------------
+----------------+----------------------------
+  1 | The Hobbit                     |         1 |        1 |           1937 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  2 | Foundation                     |         2 |        2 |           1951 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  3 | Murder on the Orient Express   |         3 |        3 |           1934 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  4 | It                             |         4 |        4 |           1986 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  5 | Pride and Prejudice            |         5 |        5 |           1813 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  6 | Adventures of Huckleberry Finn |         6 |        7 |           1884 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  7 | War and Peace                  |         7 |        7 |           1869 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+  8 | The Shining                    |         4 |        4 |           1977 | 2025-11-07 
+10:42:38.284634 | 2025-11-07 10:42:38.284634
+(8 rows)
+
+library_db=# \du
+                             List of roles
+ Role name |                         Attributes                         
+-----------+------------------------------------------------------------
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS
+ user1     | 
+ user2     | 
+ user3     | 
+
+library_db=# \z
+                                                          Access privileges
+ Schema |       Name        |   Type   |     Access privileges      | Column privileges  |
+                  Policies                  
+--------+-------------------+----------+----------------------------+--------------------+
+--------------------------------------------
+ public | authors           | table    | postgres=arwdDxtm/postgres+|                    |
+ 
+        |                   |          | =r/postgres               +|                    |
+ 
+        |                   |          | user3=arwdDxtm/postgres    |                    |
+ 
+ public | authors_id_seq    | sequence |                            |                    |
+ 
+ public | books             | table    | postgres=arwdDxtm/postgres+| id:               +|
+ 
+        |                   |          | =r/postgres               +|   user3=x/postgres+|
+ 
+        |                   |          | user3=arwdDxtm/postgres    | genre_id:         +|
+ 
+        |                   |          |                            |   user1=w/postgres+|
+ 
+        |                   |          |                            | published_year:   +|
+ 
+        |                   |          |                            |   user1=w/postgres |
+ 
+ public | books_id_seq      | sequence |                            |                    |
+ 
+ public | borrowings        | table    | postgres=arwdDxtm/postgres+|                    |
+ borrowed_only_policy (r):                 +
+        |                   |          | =r/postgres               +|                    |
+   (u): ((status)::text = 'borrowed'::text)+
+        |                   |          | user2=a*w*d/postgres      +|                    |
+   to: user1
+        |                   |          | user3=arwdDxtm/postgres    |                    |
+ 
+ public | borrowings_id_seq | sequence |                            |                    |
+ 
+ public | genres            | table    | postgres=arwdDxtm/postgres+|                    |
+ 
+        |                   |          | =r/postgres               +|                    |
+ 
+        |                   |          | user3=arwdDxtm/postgres    |                    |
+ 
+ public | genres_id_seq     | sequence |                            |                    |
+ 
+ public | readers           | table    | postgres=arwdDxtm/postgres+|                    |
+ 
+        |                   |          | =r/postgres               +|                    |
+ 
+        |                   |          | user3=rwdDxtm/postgres     |                    |
+ 
+ public | readers_id_seq    | sequence |                            |                    |
+ 
+(10 rows)
+
+library_db=# \z borrowings
+                                                     Access privileges
+ Schema |    Name    | Type  |     Access privileges      | Column privileges |           
+       Policies                  
+--------+------------+-------+----------------------------+-------------------+-----------
+---------------------------------
+ public | borrowings | table | postgres=arwdDxtm/postgres+|                   | borrowed_o
+nly_policy (r):                 +
+        |            |       | =r/postgres               +|                   |   (u): ((s
+tatus)::text = 'borrowed'::text)+
+        |            |       | user2=a*w*d/postgres      +|                   |   to: user
+1
+        |            |       | user3=arwdDxtm/postgres    |                   | 
+(1 row)
+
+library_db=# SELECT * FROM pg_policies;
+ schemaname | tablename  |      policyname      | permissive |  roles  |  cmd   |         
+       qual                 | with_check 
+------------+------------+----------------------+------------+---------+--------+---------
+----------------------------+------------
+ public     | borrowings | borrowed_only_policy | PERMISSIVE | {user1} | SELECT | ((status
+)::text = 'borrowed'::text) | 
+(1 row)
+
+library_db=# 
+```
